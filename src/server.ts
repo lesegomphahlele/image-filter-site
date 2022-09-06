@@ -32,22 +32,22 @@ import {Router, Request, Response} from 'express';
 
   //! END @TODO1
   
-app.get("/filteredimage", async (req: Request, res:Response) => 
-{
-  const image_url = req.query.image_url.toString();
+  app.get("/filteredimage", async (req: Request, res:Response) => 
+  {
+    const image_url = req.query.image_url.toString();
   
-  if(!image_url)
-  {
-    res.status(400).send("Bad Request: The image URL is required to proceed");
-  }
+    if(!image_url)
+    {
+      res.status(400).send("Bad Request: The image URL is required to proceed");
+    }
 
-  const filteredimage = await filterImageFromURL(image_url); //changed order now to test if request runs
-  res.status(200).sendFile(filteredimage, () =>
-  {
+    const filteredimage = await filterImageFromURL(image_url); //changed order now to test if request
+    res.status(200).sendFile(filteredimage, () =>
+    {
     deleteLocalFiles([filteredimage]);
-  });
-
-})
+    });
+    
+  })
 
   // Root Endpoint
   // Displays a simple message to the user
