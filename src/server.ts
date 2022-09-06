@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {Router, Request, Response} from 'express';
 
 (async () => {
 
@@ -31,6 +32,23 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
   //! END @TODO1
   
+app.get("/filteredimage", async (req: Request, res:Response) => 
+{
+  const image_url = req.query.image_url.toString();
+  const filteredimage = await filterImageFromURL(image_url);
+
+  if(!image_url)
+  {
+    res.status(400).send("Bad Request: The image URL is required to proceed");
+  }
+
+  res.status(200).sendFile(filteredimage, () =>
+  {
+    deleteLocalFiles([filteredimage]);
+  });
+
+})
+
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
