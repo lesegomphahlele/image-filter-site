@@ -34,12 +34,12 @@ import {Router, Request, Response} from 'express';
   
   app.get("/filteredimage", async (req: Request, res:Response) => {
     const image_url = req.query.image_url.toString();
+    const filtered_image = await filterImageFromURL(image_url); //changed order now to test if request
   
     if(!image_url) {
       res.status(400).send("Bad Request: The image URL is required to proceed");
     }
 
-    const filtered_image = await filterImageFromURL(image_url); //changed order now to test if request
     res.status(200).sendFile(filtered_image, () => {
       deleteLocalFiles([filtered_image]);
     });
